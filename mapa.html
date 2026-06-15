@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<title>Interaktivní mapa</title>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  #map {
+    width: 100%;
+    height: 100vh;
+  }
+  .custom-icon {
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+</style>
+</head>
+
+<body>
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+// ------------------------------------------------------
+// 1) NASTAVENÍ MAPY
+// ------------------------------------------------------
+const map = L.map('map', {
+  crs: L.CRS.Simple,
+  minZoom: -2,
+  maxZoom: 4
+});
+
+// ------------------------------------------------------
+// 2) NAHRÁNÍ OBRÁZKU (TVŮJ PODKLAD)
+// ------------------------------------------------------
+const imageUrl = "planek.png"; // ← sem dej název svého obrázku
+const imageWidth = 1064;       // ← šířka obrázku v px
+const imageHeight = 713;      // ← výška obrázku v px
+
+const bounds = [[0,0], [imageHeight, imageWidth]];
+L.imageOverlay(imageUrl, bounds).addTo(map);
+map.fitBounds(bounds);
+
+// ------------------------------------------------------
+// 3) FUNKCE PRO IKONKY
+// ------------------------------------------------------
+function addIcon(x, y, iconUrl, popupText) {
+  const icon = L.icon({
+    iconUrl: iconUrl,
+    iconSize: [40, 40],
+    className: "custom-icon"
+  });
+
+  L.marker([y, x], { icon: icon })
+    .addTo(map)
+    .bindPopup(popupText);
+}
+
+// ------------------------------------------------------
+// 4) TVÉ IKONKY
+// ------------------------------------------------------
+addIcon(617, 349, "fire.png", "Hasicí přístroj");
+addIcon(491, 549, "exit.png", "Únikový východ SEVER");
+addIcon(419, 129, "exit.png", "Únikový východ JIH");
+
+</script>
+</body>
+</html>
